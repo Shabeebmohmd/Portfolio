@@ -1,3 +1,6 @@
+import 'dart:collection';
+import 'dart:ui';
+
 import 'package:custom_button_builder/custom_button_builder.dart';
 import 'package:device_frame/device_frame.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +8,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:portfolio/consts/device_data.dart';
 import 'package:portfolio/core/colors/app_colors.dart';
 import 'package:portfolio/providers/current_state.dart';
+import 'package:portfolio/widgets/frosted_container.dart';
 import 'package:provider/provider.dart';
 
 class HomeView extends StatelessWidget {
@@ -24,12 +28,37 @@ class HomeView extends StatelessWidget {
           _backgroundImage(size),
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            // mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(height: 10),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [_buildDeviceFrame(size, currentState)],
+                children: [
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 30,
+                          horizontal: 10,
+                        ),
+                        child: FrostedContainer(height: 395, width: 247),
+                      ),
+                      FrostedContainer(height: 160, width: 247),
+                    ],
+                  ),
+                  _buildDeviceFrame(size, currentState),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 30,
+                          horizontal: 10,
+                        ),
+                        child: FrostedContainer(height: 395, width: 247),
+                      ),
+                      FrostedContainer(height: 160, width: 247),
+                    ],
+                  ),
+                ],
               ),
               SizedBox(height: 10),
               Row(
