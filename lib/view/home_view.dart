@@ -23,88 +23,91 @@ class HomeView extends StatelessWidget {
         children: [
           _backgroundGradient(currentState),
           _backgroundImage(size, currentState),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 30,
-                          horizontal: 10,
-                        ),
-                        child: FrostedContainer(
-                          height: 395,
-                          width: 247,
-                          childG: Wrap(
-                            children: [
-                              ...List.generate(
-                                colorPallete.length,
-                                (index) => Center(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: CustomButton(
-                                      onPressed: () {
-                                        currentState.changeBgColor(index);
-                                      },
-                                      isThreeD: true,
-                                      animate: true,
-                                      borderRadius: 100,
-                                      height: 55,
-                                      width: 100,
-                                      shadowColor: AppColors.white,
-                                      backgroundColor:
-                                          colorPallete[index].color,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildLeftFrostContainers(currentState),
+                    _buildDeviceFrame(size, currentState),
+                    _buildRightFrostContainers(),
+                  ],
+                ),
+                SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ...List.generate(
+                      devices.length,
+                      (indext) => Selector<CurrentState, DeviceInfo>(
+                        selector: (context, provider) => provider.currentDevice,
+                        builder: (context, value, child) {
+                          return _buildDeviceButton(currentState, indext);
+                        },
                       ),
-                      FrostedContainer(height: 160, width: 247),
-                    ],
-                  ),
-                  _buildDeviceFrame(size, currentState),
-                  Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 30,
-                          horizontal: 10,
-                        ),
-                        child: FrostedContainer(height: 395, width: 247),
-                      ),
-                      FrostedContainer(height: 160, width: 247),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ...List.generate(
-                    devices.length,
-                    (indext) => Selector<CurrentState, DeviceInfo>(
-                      selector: (context, provider) => provider.currentDevice,
-                      builder: (context, value, child) {
-                        return _buildDeviceButton(currentState, indext);
-                      },
                     ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10),
-            ],
+                  ],
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  Column _buildRightFrostContainers() {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+          child: FrostedContainer(height: 395, width: 247),
+        ),
+        FrostedContainer(height: 160, width: 247),
+      ],
+    );
+  }
+
+  Column _buildLeftFrostContainers(CurrentState currentState) {
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 10),
+          child: FrostedContainer(
+            height: 395,
+            width: 247,
+            childG: Wrap(
+              children: [
+                ...List.generate(
+                  colorPallete.length,
+                  (index) => Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10),
+                      child: CustomButton(
+                        onPressed: () {
+                          currentState.changeBgColor(index);
+                        },
+                        isThreeD: true,
+                        animate: true,
+                        borderRadius: 100,
+                        height: 55,
+                        width: 100,
+                        shadowColor: AppColors.white,
+                        backgroundColor: colorPallete[index].color,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        FrostedContainer(height: 160, width: 247),
+      ],
     );
   }
 
@@ -135,8 +138,79 @@ class HomeView extends StatelessWidget {
         builder: (context, value, child) {
           return DeviceFrame(
             device: currentState.currentDevice,
-            screen: const Center(
-              child: Text('Shabeeb', style: TextStyle(color: Colors.white)),
+            screen: Container(
+              padding: EdgeInsets.only(top: 70, left: 20, right: 20),
+              decoration: BoxDecoration(
+                gradient: colorPallete[currentState.knobSelected].gradient,
+              ),
+              child: Wrap(
+                crossAxisAlignment: WrapCrossAlignment.center,
+                alignment: WrapAlignment.start,
+                children: [
+                  ...List.generate(
+                    apps.length,
+                    (index) => Container(
+                      margin: EdgeInsets.only(
+                        top: 10,
+                        left:
+                            currentState.currentDevice ==
+                                    Devices.ios.iPhone16ProMax
+                                ? 15
+                                : 20,
+                        right:
+                            currentState.currentDevice ==
+                                    Devices.ios.iPhone16ProMax
+                                ? 15
+                                : 20,
+                        bottom: 20,
+                      ),
+                      child: Column(
+                        children: [
+                          CustomButton(
+                            margin: EdgeInsets.only(bottom: 5),
+                            onPressed: () {},
+                            borderRadius:
+                                currentState.currentDevice ==
+                                        Devices.ios.iPhone16ProMax
+                                    ? 8
+                                    : 100,
+                            height:
+                                currentState.currentDevice ==
+                                        Devices.ios.iPhone16ProMax
+                                    ? 70
+                                    : 60,
+                            width:
+                                currentState.currentDevice ==
+                                        Devices.ios.iPhone16ProMax
+                                    ? 70
+                                    : 60,
+                            backgroundColor: apps[index].color,
+                            child: Center(
+                              child: Icon(
+                                apps[index].icon,
+                                size: 25,
+                                color: AppColors.black,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 65,
+                            child: Center(
+                              child: Text(
+                                apps[index].title,
+                                style: TextStyle(
+                                  color: AppColors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         },
