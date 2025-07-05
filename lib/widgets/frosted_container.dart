@@ -6,10 +6,12 @@ import 'package:portfolio/core/colors/app_colors.dart';
 class FrostedContainer extends StatelessWidget {
   final double height;
   final double width;
+  final Widget? childG;
   const FrostedContainer({
     super.key,
     required this.height,
     required this.width,
+    this.childG,
   });
 
   @override
@@ -27,6 +29,7 @@ class FrostedContainer extends StatelessWidget {
                   gradient: AppGradientColors.gradientContainer,
                   borderRadius: BorderRadius.circular(13),
                 ),
+                child: childG,
               ),
             ),
           ),

@@ -4,8 +4,15 @@ import 'package:flutter/foundation.dart';
 class CurrentState extends ChangeNotifier {
   DeviceInfo currentDevice = Devices.ios.iPhone16ProMax;
 
+  int knobSelected = 2;
+
   void changeSelectedDevice(DeviceInfo device) {
     currentDevice = device;
+    notifyListeners();
+  }
+
+  void changeBgColor(int index) {
+    knobSelected = index;
     notifyListeners();
   }
 }
